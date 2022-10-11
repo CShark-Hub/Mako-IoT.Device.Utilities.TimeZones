@@ -4,7 +4,7 @@ pool:
 variables:
 - group: mako-iot-github
 - name: packageName
-  value: 'MakoIoT.Device.Utilities.ICalParser'
+  value: 'MakoIoT.Device.Utilities.TimeZones'
 
 resources:
   repositories:
