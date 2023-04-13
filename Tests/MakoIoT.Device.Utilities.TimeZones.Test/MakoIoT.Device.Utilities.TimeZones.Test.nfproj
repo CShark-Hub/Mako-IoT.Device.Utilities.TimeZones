@@ -33,9 +33,6 @@
     <Compile Include="TimeZoneTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Mako.nanoFramework.Json">
-      <HintPath>..\..\packages\Mako.nanoFramework.Json.2.2.8.1\lib\Mako.nanoFramework.Json.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib">
       <HintPath>..\..\packages\nanoFramework.CoreLibrary.1.12.0\lib\mscorlib.dll</HintPath>
     </Reference>
