@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using System.Text.RegularExpressions;
+using MakoIoT.Device.Utilities.TimeZones.Extensions;
 
 namespace MakoIoT.Device.Utilities.TimeZones
 {
@@ -22,20 +22,22 @@ namespace MakoIoT.Device.Utilities.TimeZones
 
             var parts = posixTz.ToUpper().Split(',');
 
-            string standardName, dstName;
+            string standardName = "", dstName = "", stdOffset = "", dstOffset = "";
             TimeSpan standardUtcOffset, dstUtcOffset;
 
             try
             {
-                var namesAndOffsets = Regex.Match(parts[0],
-                    @"^([A-Z]+|(<(-|\+){0,1}[0-9:]+>))((-|\+){0,1}\d{1,2}(:\d{2}){0,1})(([A-Z]+|(<(-|\+){0,1}[0-9:]+>))(((-|\+){0,1}\d{1,2}(:\d{2}){0,1})){0,1}){0,1}$");
+                var i = 0;
 
-                standardName = namesAndOffsets.Groups[1].Value;
-                standardUtcOffset = -ParseTimeSpan(namesAndOffsets.Groups[4].Value);
-                dstName = namesAndOffsets.Groups[8].Success ? namesAndOffsets.Groups[8].Value : String.Empty;
-                dstUtcOffset = namesAndOffsets.Groups[11].Success
-                    ? -ParseTimeSpan(namesAndOffsets.Groups[11].Value)
-                    : standardUtcOffset.Add(TimeSpan.FromHours(1));
+                if (ParseFragment(true, parts[0], ref i, out standardName))
+                    if (ParseFragment(false, parts[0], ref i, out stdOffset))
+                        if (ParseFragment(true, parts[0], ref i, out dstName))
+                            ParseFragment(false, parts[0], ref i, out dstOffset);
+
+                standardUtcOffset = -ParseTimeSpan(stdOffset);
+                dstUtcOffset = dstOffset == ""
+                    ? standardUtcOffset.Add(TimeSpan.FromHours(1))
+                    : -ParseTimeSpan(dstOffset);
             }
             catch (Exception ex)
             {
@@ -49,6 +51,34 @@ namespace MakoIoT.Device.Utilities.TimeZones
             }
 
             return new TimeZone(standardName, standardUtcOffset);
+        }
+
+        private static bool ParseFragment(bool isName, string input, ref int i, out string fragment)
+        {
+            fragment = "";
+            var c = input[i++];
+            bool ltEscape = c == '<';
+
+            while (
+                i < input.Length
+                && ((isName && (c.IsLetter() || ltEscape))
+                    || (!isName && !c.IsLetter() && c != '<'))
+            )
+            {
+                fragment += c;
+                if (c == '>')
+                    ltEscape = false;
+                c = input[i++];
+            }
+
+            if (i == input.Length)
+            {
+                fragment += c;
+                return false;
+            }
+
+            i--;
+            return true;
         }
 
         /// <summary>
