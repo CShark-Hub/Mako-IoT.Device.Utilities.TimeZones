@@ -65,6 +65,23 @@ namespace MakoIoT.Device.Utilities.TimeZones
         /// <param name="month">Month number</param>
         /// <param name="week">Week number in a month. 5 indicates the last week.</param>
         /// <param name="dayOfWeek">Day of the week.</param>
+        /// <param name="timeOfDay">Time of day.</param>
+        /// <param name="kind">Kind of the date</param>
+        public FloatingDate(int month, int week, DayOfWeek dayOfWeek, TimeSpan timeOfDay, DateKind kind = DateKind.Local)
+        {
+            Month = month;
+            Week = week;
+            DayOfWeek = dayOfWeek;
+            Kind = kind;
+            TimeOfDay = timeOfDay;
+        }
+
+        /// <summary>
+        /// Creates instance of FloatingDate
+        /// </summary>
+        /// <param name="month">Month number</param>
+        /// <param name="week">Week number in a month. 5 indicates the last week.</param>
+        /// <param name="dayOfWeek">Day of the week.</param>
         /// <param name="kind">Kind of the date</param>
         public FloatingDate(int month, int week, DayOfWeek dayOfWeek, DateKind kind = DateKind.Local) : this(month, week, dayOfWeek, 0, 0, 0, kind)
         {

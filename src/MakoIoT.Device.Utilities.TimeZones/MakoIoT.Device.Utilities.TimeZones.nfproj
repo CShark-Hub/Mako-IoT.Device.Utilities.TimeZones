@@ -23,6 +23,9 @@
     <Compile Include="FixedDate.cs" />
     <Compile Include="FloatingDate.cs" />
     <Compile Include="KnownTimeZones.cs" />
+    <Compile Include="Serialization\SerializableFixedDate.cs" />
+    <Compile Include="Serialization\SerializableFloatingDate.cs" />
+    <Compile Include="Serialization\SerializableTimeZone.cs" />
     <Compile Include="TimeZone.cs" />
     <Compile Include="TimeZoneConverter.cs" />
   </ItemGroup>
