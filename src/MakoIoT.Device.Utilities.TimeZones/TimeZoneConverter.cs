@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text;
 using MakoIoT.Device.Utilities.TimeZones.Extensions;
 
@@ -59,11 +60,7 @@ namespace MakoIoT.Device.Utilities.TimeZones
             var c = input[i++];
             bool ltEscape = c == '<';
 
-            while (
-                i < input.Length
-                && ((isName && (c.IsLetter() || ltEscape))
-                    || (!isName && !c.IsLetter() && c != '<'))
-            )
+            while (i < input.Length && IsToken(isName, c, ltEscape))
             {
                 fragment += c;
                 if (c == '>')
@@ -71,7 +68,7 @@ namespace MakoIoT.Device.Utilities.TimeZones
                 c = input[i++];
             }
 
-            if (i == input.Length)
+            if (i == input.Length && IsToken(isName, c, ltEscape))
             {
                 fragment += c;
                 return false;
@@ -79,6 +76,12 @@ namespace MakoIoT.Device.Utilities.TimeZones
 
             i--;
             return true;
+        }
+
+        private static bool IsToken(bool isName, char c, bool ltEscape)
+        {
+            return (isName && (c.IsLetter() || ltEscape))
+                   || (!isName && !c.IsLetter() && c != '<');
         }
 
         /// <summary>

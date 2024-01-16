@@ -32,6 +32,7 @@
     <Compile Include="SerializableTimeZoneTest.cs" />
     <Compile Include="TimeZoneConverterTest.cs" />
     <Compile Include="TimeZoneTest.cs" />
+    <Compile Include="WorldTimeZonesTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\MakoIoT.Device.Utilities.TimeZones\MakoIoT.Device.Utilities.TimeZones.nfproj" />
